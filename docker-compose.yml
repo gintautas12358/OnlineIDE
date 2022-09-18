@@ -1,0 +1,82 @@
+version: "3.7"
+
+services:
+  discoveryserver:
+    build:
+      dockerfile: Dockerfile
+      context: ./discoveryserver
+    image: discoveryserver:latest
+    restart: on-failure
+    ports:
+      - 8761:8761
+
+  gateway-service:
+    build:
+      dockerfile: Dockerfile
+      context: ./api-gateway
+    image: gateway-service:latest
+    restart: on-failure
+    environment:
+      - EUREKA_SERVER=http://discoveryserver:8761/eureka
+      - CLIENT-ID=44a77e5d5b8a7bfa174f83a5f7405678d8978c65139c92584e389e26df64fe43
+      - CLIENT-SECRET=c47d949078f412616cec7f8d1d4b1d71e81abab1682f13c1ba83f0e397a5fe9c
+    ports:
+      - 8000:8000
+
+  compiler-service:
+    build:
+      dockerfile: Dockerfile
+      context: ./compiler
+    image: compiler-service:latest
+    restart: on-failure
+    environment:
+      - EUREKA_SERVER=http://discoveryserver:8761/eureka
+    ports:
+      - 1001-1005:8081
+
+  darkmode-service:
+    build:
+      dockerfile: Dockerfile
+      context: ./dark-mode
+    image: darkmode-service:latest
+    restart: on-failure
+    environment:
+      - EUREKA_SERVER=http://discoveryserver:8761/eureka
+    ports:
+      - 2001-2005:8083
+
+  project-service:
+    build:
+      dockerfile: Dockerfile
+      context: ./project
+    image: project-service:latest
+    restart: on-failure
+    depends_on:
+      - db
+    environment:
+      - JDBC_URL=jdbc:postgresql://db:5432/project_db?user=project_user&password=project_pw
+      - EUREKA_SERVER=http://discoveryserver:8761/eureka
+      - CLIENT-ID=44a77e5d5b8a7bfa174f83a5f7405678d8978c65139c92584e389e26df64fe43
+      - CLIENT-SECRET=c47d949078f412616cec7f8d1d4b1d71e81abab1682f13c1ba83f0e397a5fe9c
+    ports:
+      - 3001-3005:8080
+
+  db:
+    image: postgres:9.6
+    environment:
+      - POSTGRES_DB=project_db
+      - POSTGRES_USER=project_user
+      - POSTGRES_PASSWORD=project_pw
+    ports:
+      - 5431-5435:5432
+
+  frontend-service:
+    build:
+      dockerfile: Dockerfile
+      context: ./ui
+    image: frontend-service:latest
+    restart: on-failure
+    environment:
+      - EUREKA_SERVER=http://discoveryserver:8761/eureka
+    ports:
+      - 5001-5005:8082

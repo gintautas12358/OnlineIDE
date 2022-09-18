@@ -1,0 +1,64 @@
+version: "3.7"
+
+services:
+  discoveryserver:
+    image: gitlab.lrz.de:5005/ase20-group1-3/onlineide/discoveryserver
+    restart: on-failure
+    ports:
+      - 8761:8761
+
+  gateway-service:
+    image: gitlab.lrz.de:5005/ase20-group1-3/onlineide/gateway-service
+    restart: on-failure
+    environment:
+      - EUREKA_SERVER=http://discoveryserver:8761/eureka
+      - CLIENT-ID=04b8afb43f264189bd5ce57af1a17a666704fde42c3d1ba2fe9adfb6a6b5f0b2
+      - CLIENT-SECRET=a1b742606f39a976c5778a1c2d4248217fc49451d899e69fceb2c8b258c16aec
+    ports:
+      - 8000:8000
+
+  compiler-service:
+    image: gitlab.lrz.de:5005/ase20-group1-3/onlineide/compiler-service
+    restart: on-failure
+    environment:
+      - EUREKA_SERVER=http://discoveryserver:8761/eureka
+    ports:
+      - 1001-1005:8081
+
+  darkmode-service:
+    image: gitlab.lrz.de:5005/ase20-group1-3/onlineide/darkmode-service
+    restart: on-failure
+    environment:
+      - EUREKA_SERVER=http://discoveryserver:8761/eureka
+    ports:
+      - 2001-2005:8083
+
+  project-service:
+    image: gitlab.lrz.de:5005/ase20-group1-3/onlineide/project-service
+    restart: on-failure
+    depends_on:
+      - db
+    environment:
+      - JDBC_URL=jdbc:postgresql://db:5432/project_db?user=project_user&password=project_pw
+      - EUREKA_SERVER=http://discoveryserver:8761/eureka
+      - CLIENT-ID=04b8afb43f264189bd5ce57af1a17a666704fde42c3d1ba2fe9adfb6a6b5f0b2
+      - CLIENT-SECRET=a1b742606f39a976c5778a1c2d4248217fc49451d899e69fceb2c8b258c16aec
+    ports:
+      - 3001-3005:8080
+
+  db:
+    image: postgres:9.6
+    environment:
+      - POSTGRES_DB=project_db
+      - POSTGRES_USER=project_user
+      - POSTGRES_PASSWORD=project_pw
+    ports:
+      - 5431-5435:5432
+
+  frontend-service:
+    image: gitlab.lrz.de:5005/ase20-group1-3/onlineide/frontend-service
+    restart: on-failure
+    environment:
+      - EUREKA_SERVER=http://discoveryserver:8761/eureka
+    ports:
+      - 5001-5005:8082

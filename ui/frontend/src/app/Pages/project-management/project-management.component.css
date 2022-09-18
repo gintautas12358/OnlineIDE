@@ -1,0 +1,19 @@
+.project-management {
+  width: 70%;
+  margin: 20px auto;
+  display: table;
+}
+
+.createProject {
+  background-color: #0065BD;
+  color: white;
+}
+
+.data-table {
+  width: 90%;
+  margin: 20px auto;
+}
+
+.deleteBtn {
+  color: red;
+}

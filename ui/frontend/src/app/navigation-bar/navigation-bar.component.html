@@ -1,0 +1,52 @@
+<mat-sidenav-container class="sidenav-container">
+  <mat-sidenav #drawer class="sidenav" fixedInViewport
+      [attr.role]="(isHandset$ | async) ? 'dialog' : 'navigation'"
+      [mode]="(isHandset$ | async) ? 'over' : 'side'"
+      [opened]="(isHandset$ | async) === false">
+    <mat-toolbar class="title">Menu</mat-toolbar>
+
+
+
+    <mat-action-list class="buttons">
+      <!-- "back" button -->
+      <mat-nav-list>
+        <a mat-list-item [routerLink]="['/manage-projects']">Back</a>
+      </mat-nav-list>
+
+      <!-- "new" button -->
+      <button mat-list-item (click)="openNewFileDialog()">New file</button>
+
+      <!-- "delete" button -->
+      <button mat-list-item [disabled]="files?.length === 0" (click)="fileDeleted()">Delete file</button>
+
+      <!-- "Edit name" button -->
+      <button [disabled]="files?.length === 0" mat-list-item (click)="openDialog()">Edit name</button>
+    </mat-action-list>
+
+    <mat-toolbar class="subtitle">Source Files</mat-toolbar>
+
+    <mat-nav-list>
+      <!-- file list -->
+      <div *ngFor="let f of files" (click)="fileSelected(f)">
+        <button mat-button-flat class="sourceFiles" > {{ f.name }} </button>
+      </div>
+    </mat-nav-list>
+
+  </mat-sidenav>
+
+  <mat-sidenav-content>
+    <mat-toolbar color="primary">
+      <button
+        type="button"
+        aria-label="Toggle sidenav"
+        mat-icon-button
+        (click)="drawer.toggle()"
+        *ngIf="isHandset$ | async">
+        <mat-icon aria-label="Side nav toggle icon">menu</mat-icon>
+      </button>
+      <span>Project</span>
+    </mat-toolbar>
+    <!-- Add Content Here -->
+    <ng-content></ng-content>
+  </mat-sidenav-content>
+</mat-sidenav-container>

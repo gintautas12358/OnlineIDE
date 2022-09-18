@@ -1,0 +1,57 @@
+<h2>My Projects</h2>
+
+<button mat-raised-button *ngIf="authService.authenticated | async" (click)="authService.logout()">Sign Out</button>
+
+<div class="project-management">
+  <button class="createProject" mat-raised-button (click)="
+openDialog('Add', { id: null, name: '', userIds: []})">
+    Create Project
+  </button>
+  <div class="mat-elevation-z8">
+    <table #projectTable mat-table class="data-table" aria-label="Elements" [dataSource]="dataSource">
+      <!-- Id Column -->
+      <ng-container matColumnDef="id">
+        <th mat-header-cell *matHeaderCellDef>Id</th>
+        <td mat-cell *matCellDef="let row">{{row.id}}</td>
+      </ng-container>
+
+      <!-- Name Column -->
+      <ng-container matColumnDef="name">
+        <th mat-header-cell *matHeaderCellDef>Name</th>
+        <td mat-cell *matCellDef="let row">{{row.name}}</td>
+      </ng-container>
+
+      <!-- Users Column -->
+      <ng-container matColumnDef="userIds">
+        <th mat-header-cell *matHeaderCellDef>Users</th>
+        <td mat-cell *matCellDef="let row">{{row["userIds"]}}</td>
+      </ng-container>
+
+      <!-- Action Column -->
+      <ng-container matColumnDef="action">
+        <th mat-header-cell *matHeaderCellDef> Action</th>
+        <td mat-cell *matCellDef="let element">
+          <button class="openBtn" style="margin:5px" mat-raised-button [routerLink]="['/ide', element.id]">
+            Open
+          </button>
+          <button class="updateBtn" style="margin:5px" mat-raised-button (click)="openDialog('Update', element)">
+            Edit name
+          </button>
+          <button class="deleteBtn" style="margin:5px" mat-raised-button (click)="openDialog('Delete', element)">
+            Delete
+          </button>
+          <button class="shareBtn" style="margin:5px" mat-raised-button (click)="openDialog('Share', element)">
+            Share
+          </button>
+
+        </td>
+      </ng-container>
+
+      <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+      <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+    </table>
+  </div>
+</div>
+
+
+

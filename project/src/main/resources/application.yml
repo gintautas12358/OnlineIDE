@@ -1,0 +1,43 @@
+eureka:
+  client:
+    serviceUrl:
+      defaultZone: ${EUREKA_SERVER:http://localhost:8761/eureka}
+spring:
+  application:
+    name: project-service
+  datasource:
+    name: ${POSTGRES_DB:my_db}
+    username: ${POSTGRES_USER:admin}
+    password: ${POSTGRES_PASSWORD:test}
+    driver-class-name: org.postgresql.Driver
+    url: ${JDBC_URL:}
+  jpa:
+    hibernate:
+      # Hibernate ddl auto (create, create-drop, validate, update)
+      # `ddl-auto` property is used to automatically create the tables based on the entity classes
+      ddl-auto: update
+    properties:
+      hibernate:
+        # Specifying the SQL dialect makes Hibernate generate better SQL for the chosen database
+        dialect: "org.hibernate.dialect.PostgreSQLDialect"
+        jdbc:
+          lob:
+            # fixes Hibernate issue: https://github.com/spring-projects/spring-boot/issues/12007
+            non_contextual_creation: true
+
+server:
+  port: ${port:8080}
+database.port: ${DB_PORT:5432}
+
+security:
+  oauth2:
+    client:
+      clientId: ${CLIENT-ID}
+      clientSecret: ${CLIENT-SECRET}
+      accessTokenUri: https://gitlab.lrz.de/oauth/token
+      userAuthorizationUri: https://gitlab.lrz.de/oauth/authorize
+      scope:
+        - read_user
+        - api
+    resource:
+      userInfoUri: https://gitlab.lrz.de/api/v4/user

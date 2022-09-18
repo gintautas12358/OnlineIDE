@@ -1,0 +1,13 @@
+<h1 mat-dialog-title>Edit name</h1>
+<div mat-dialog-content>
+  <div *ngIf="!validationService.validateNamingInput(data.fileName)">
+    {{ validationService.getErrorMsg() }}
+  </div>
+  <mat-form-field>
+    <input matInput [(ngModel)]="data.fileName">
+  </mat-form-field>
+</div>
+<div mat-dialog-actions>
+  <button mat-button (click)="onNoClick()">Cancel</button>
+  <button mat-button [mat-dialog-close]="data.fileName" [disabled]="!validationService.validateNamingInput(data.fileName)">Ok</button>
+</div>

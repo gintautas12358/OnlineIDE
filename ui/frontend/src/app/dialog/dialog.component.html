@@ -1,0 +1,25 @@
+<h1> {{action}} {{className}}</h1>
+<div mat-dialog-content>
+  <div *ngIf="!validationService.validateNamingInput(localData.name)">
+    {{ validationService.getErrorMsg() }}
+  </div>
+  <mat-form-field *ngIf="action == 'Add'">
+    <input placeholder="{{action}} Name" matInput [(ngModel)]="localData.name">
+  </mat-form-field>
+  <mat-form-field *ngIf="action == 'Update'">
+    <input placeholder="{{action}} Name" matInput [(ngModel)]="localData.name">
+  </mat-form-field>
+  <mat-form-field *ngIf="action == 'Share'">
+    <input placeholder="{{action}} {{localData.name}} to:" matInput [(ngModel)]="localData.newUser">
+  </mat-form-field>
+  <div *ngIf="action == 'Delete'">
+    Sure to delete <b>{{localData.name}} </b>
+  </div>
+  <mat-form-field *ngIf="action == 'Share error'">
+    No such user found!
+  </mat-form-field>
+</div>
+<div mat-dialog-actions>
+  <button mat-button mat-dialog-close (click)="closeDialog()">Cancel</button>
+  <button mat-button (click)="doAction()" [disabled]="!validationService.validateNamingInput(localData.name)">{{action}}</button>
+</div>

@@ -1,0 +1,52 @@
+.sidenav-container {
+  height: 100%;
+
+}
+
+.title {
+  color: white;
+}
+
+.subtitle {
+  color: white;
+  font-size: 16px;
+}
+
+.sidenav {
+  width: 200px;
+  background-color: #0065BD;
+}
+
+.mat-action-list {
+  color: white;
+}
+
+.mat-list-item {
+  color: white;
+}
+
+.mat-toolbar {
+  background: inherit;
+}
+
+.mat-toolbar.mat-primary {
+  position: sticky;
+  top: 0;
+  background-color: #0065BD;
+  z-index: 1;
+}
+
+.buttons {
+  color: white;
+  background-color: #64A0C8;
+}
+
+.sourceFiles {
+  /*center vertically*/
+  position: relative;
+  left: 50%;
+  transform: translate(-50%, 0);
+  /*determine size*/
+  width: 180px;
+}
+

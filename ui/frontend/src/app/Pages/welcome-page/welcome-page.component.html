@@ -1,0 +1,7 @@
+<p>Welcome to the OnlineIDE! Click the button to sign in.</p>
+
+<button mat-raised-button *ngIf="authService.authenticated | async" [routerLink]="['/manage-projects']">Enter</button>
+<button mat-raised-button *ngIf="!(authService.authenticated | async)" (click)="authService.login()">Sign In
+</button>
+
+

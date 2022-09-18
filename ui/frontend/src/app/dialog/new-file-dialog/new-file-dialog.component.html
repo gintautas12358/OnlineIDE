@@ -1,0 +1,23 @@
+<h1 mat-dialog-title>New file name</h1>
+<div mat-dialog-content>
+  <div *ngIf="!(data.fileName.length > 2)">
+    Input should be minimum 3 characters
+  </div>
+  <div *ngIf="!isFileType(data.fileName)">
+    Wrong type. Allowed ".c", ".java".
+  </div>
+  <div *ngIf="!isUnique(data.fileName)">
+    Not unique name.
+  </div>
+  <mat-form-field>
+
+    <input matInput [(ngModel)]="data.fileName">
+  </mat-form-field>
+</div>
+<div mat-dialog-actions>
+  <button mat-button (click)="onNoClick()">Cancel</button>
+  <button mat-button [mat-dialog-close]="data.fileName" cdkFocusInitial [disabled]="!(data.fileName.length > 2) ||
+                                                                                    !isFileType(data.fileName) ||
+                                                                                    !isUnique(data.fileName)"
+                                                                    >Ok</button>
+</div>

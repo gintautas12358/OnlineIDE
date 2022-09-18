@@ -1,0 +1,11 @@
+<app-navigation-bar [files]="files"
+                    (fileSelect)="fileSelected($event)"
+                    (fileDelete)="deleteFile($event)"
+                    (fileAdd)="addFile($event)">
+  <h3>Current project: {{project?.name}}</h3>
+
+  <app-editor   [files]="files"
+                [selectedFileIndex]="selectedFileIndex"></app-editor>
+</app-navigation-bar>
+
+
